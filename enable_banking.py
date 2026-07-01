@@ -112,8 +112,6 @@ class EnableBanking:
         }
         
         self.secrets.save_session(session_data)
-
-        logger.info("Session saved. Valid until %s", session_data["valid_until"])
         
         return session_data
 
