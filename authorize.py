@@ -17,7 +17,7 @@ def main():
 
         secrets.save_session(session)
 
-        logger.info("Session saved successfully. Valid until %s", session['access']['valid_until'] )
+        logger.info("Session saved successfully. Valid until %s", session['valid_until'] )
 
     except Exception:
         logger.exception("Session renewal failed")

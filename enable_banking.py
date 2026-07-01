@@ -107,7 +107,6 @@ class EnableBanking:
             "session_id": session["session_id"],
             "account_uid": session["accounts"][0]["uid"],
             "valid_until": session["access"]["valid_until"],
-            "authorized_at": session["authorized"],
             "bank": ASPSP_NAME
         }
         

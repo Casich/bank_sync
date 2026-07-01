@@ -1,10 +1,13 @@
-from datetime import timedelta
 import logging
+import os
+from datetime import timedelta
 from flask import Flask
 
 from enable_banking import EnableBanking
 from google_sheets import GoogleSheets
 
+
+IS_CLOUD = os.getenv("K_SERVICE") is not None
 
 logging.basicConfig(
     level=logging.INFO,
@@ -55,4 +58,7 @@ def main():
         raise
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    if IS_CLOUD:
+        app.run(host="0.0.0.0", port=8080)
+    else:
+        main()
