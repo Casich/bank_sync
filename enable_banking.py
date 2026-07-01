@@ -1,4 +1,5 @@
 import uuid
+import logging
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, urlparse
 from secret_manager import Secrets
@@ -13,6 +14,9 @@ from config import (
     ASPSP_NAME,
     KEY_PATH,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class EnableBanking:
@@ -68,7 +72,7 @@ class EnableBanking:
         self.session = self.secrets.load_session()
 
         if self._has_valid_session():
-            print("Using existing Enable Banking session.")
+            logger.info("Using existing Enable Banking session.")
             return
 
         raise RuntimeError(
@@ -109,7 +113,7 @@ class EnableBanking:
         
         self.secrets.save_session(session_data)
 
-        print("Session saved.")
+        logger.info("Session saved. Valid until %s", session_data["valid_until"])
         
         return session_data
 

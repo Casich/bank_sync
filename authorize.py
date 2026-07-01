@@ -1,37 +1,27 @@
-import os
+import logging
 
 from enable_banking import EnableBanking
+from secret_manager import Secrets
 
-from storage.file_session_store import FileSessionStore
-from storage.secret_manager_session_store import SecretManagerSessionStore
-
-
-RUNNING_IN_CLOUD = os.getenv("K_SERVICE") is not None
-
-
-def get_session_store():
-    if RUNNING_IN_CLOUD:
-        return SecretManagerSessionStore(
-            project_id=os.environ["GOOGLE_CLOUD_PROJECT"],
-            secret_name="enablebanking-session",
-        )
-
-    return FileSessionStore("session.json")
-
+logger = logging.getLogger(__name__)
 
 def main():
-    session_store = get_session_store()
+    try:
+        logging.info("Creating new EnableBanking session")
 
-    bank = EnableBanking(session_store)
+        secrets = Secrets()
 
-    session = bank.authorize()
+        bank = EnableBanking()
 
-    session_store.save(session)
+        session = bank.authorize()
 
-    print()
-    print("✅ Session saved successfully.")
-    print(f"Valid until: {session['access']['valid_until']}")
+        secrets.save_session(session)
 
+        logger.info("Session saved successfully. Valid until %s", session['access']['valid_until'] )
+
+    except Exception:
+        logger.exception("Session renewal failed")
+        raise
 
 if __name__ == "__main__":
     main()
