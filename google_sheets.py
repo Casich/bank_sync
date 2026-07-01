@@ -1,10 +1,8 @@
 from datetime import datetime
-
 import gspread
 
 from secret_manager import Secrets
 from config import SHEET_NAME
-
 
 class GoogleSheets:
 

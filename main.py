@@ -1,5 +1,6 @@
 from datetime import timedelta
 import logging
+from flask import Flask
 
 from enable_banking import EnableBanking
 from google_sheets import GoogleSheets
@@ -11,6 +12,17 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+
+app = Flask(__name__)
+
+@app.route("/", methods=["GET"])
+def run_sync():
+
+    main()
+
+    return "OK", 200
+
 
 def main():
     try:
@@ -41,3 +53,6 @@ def main():
     except Exception:
         logger.exception("Synchronization failed")
         raise
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
