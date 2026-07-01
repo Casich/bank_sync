@@ -13,6 +13,8 @@ API_ORIGIN = "https://api.enablebanking.com"
 APPLICATION_ID = "89380a13-d055-48ff-942c-017dc24d0335"
 KEY_PATH = Path("credentials/enablebanking.pem")
 ASPSP_NAME = "Jyske Bank"
+ASPSP_COUNTRY = "DK"
+
 # ----------------------------
 # Google Sheets
 # ----------------------------
