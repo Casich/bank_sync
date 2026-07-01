@@ -1,0 +1,7 @@
+requests
+PyJWT
+gspread
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-cloud-secret-manager
