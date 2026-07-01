@@ -12,23 +12,32 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+def main():
+    try:
+        logger.info("Starting synchronization...")
 
-bank = EnableBanking()
-sheets = GoogleSheets()
+        bank = EnableBanking()
+        sheets = GoogleSheets()
 
 
-latest = sheets.get_latest_booking_date()
-logger.debug("Latest transaction is from %s", latest.strftime("%d-%m-%Y"))
-fetch_date = latest - timedelta(days=2)
-logger.info("Fetching transactions from %s...", fetch_date.strftime("%d-%m-%Y"))
-transactions = bank.get_transactions(
-    from_date=(
-        fetch_date
-        if latest else None
-    )
-)
-logger.debug("Fetched {transactions} transactions")
+        latest = sheets.get_latest_booking_date()
+        logger.debug("Latest transaction is from %s", latest.strftime("%d-%m-%Y"))
+        fetch_date = latest - timedelta(days=2)
+        logger.info("Fetching transactions from %s...", fetch_date.strftime("%d-%m-%Y"))
+        transactions = bank.get_transactions(
+            from_date=(
+                fetch_date
+                if latest else None
+            )
+        )
+        logger.debug("Fetched {transactions} transactions")
 
-added = sheets.append_transactions(transactions)
+        added = sheets.append_transactions(transactions)
 
-logger.info("Added {added} new transactions")
+        logger.info("Added %s new transactions", added)
+
+        logger.info("Synchronization completed succesfully")
+    
+    except Exception:
+        logger.exception("Synchronization failed")
+        raise
